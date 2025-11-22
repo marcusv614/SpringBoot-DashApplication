@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Usuários</title></head>
+<body>
+  <h1>Usuários</h1>
+  <table>
+    <thead><tr><th>ID</th><th>Username</th><th>Senha</th></tr></thead>
+    <tbody>
+      <tr th:each="u : ${usuarios}">
+        <td th:text="${u.id}">1</td>
+        <td th:text="${u.username}">user</td>
+        <td th:text="${u.pwd}">pwd</td>
+      </tr>
+      <tr th:if="${usuarios.isEmpty()}">
+        <td colspan="3">Nenhum usuário encontrado.</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
