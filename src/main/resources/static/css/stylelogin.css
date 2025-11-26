@@ -1,11 +1,15 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   background: #f2f2f2;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
+}
+
+.ancor {
+  margin-top: 0.6em;
 }
 
 .containerLogin {

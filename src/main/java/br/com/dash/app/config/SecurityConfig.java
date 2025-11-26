@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()) // libera POST/PUT/DELETE
 				.authorizeHttpRequests(auth -> auth.anyRequest().permitAll() // libera tudo
 				).formLogin(login -> login.disable()) // desativa login padrão

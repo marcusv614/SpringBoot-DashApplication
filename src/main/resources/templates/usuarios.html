@@ -6,28 +6,32 @@
     <link rel="stylesheet" th:href="@{/css/styleusuarios.css}" />
   </head>
   <body>
-    <h1>Usuários cadastrados</h1>
+    <div class="containerPagina">
+      <h1>Usuários cadastrados</h1>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Senha</th>
+            </tr>
+          </thead>
 
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Username</th>
-          <th>Senha</th>
-        </tr>
-      </thead>
+          <tbody>
+            <tr th:each="usr : ${usuarios}">
+              <td th:text="${usr.id}"></td>
+              <td th:text="${usr.username}"></td>
+              <td th:text="${usr.pwd}"></td>
+            </tr>
 
-      <tbody>
-        <tr th:each="usr : ${usuarios}">
-          <td th:text="${usr.id}"></td>
-          <td th:text="${usr.username}"></td>
-          <td th:text="${usr.pwd}"></td>
-        </tr>
-
-        <tr th:if="${usuarios.isEmpty()}">
-          <td colspan="3">Nenhum usuário encontrado.</td>
-        </tr>
-      </tbody>
-    </table>
+            <tr th:if="${usuarios.isEmpty()}">
+              <td colspan="3">Nenhum usuário encontrado.</td>
+            </tr>
+          </tbody>
+        </table>
+        <a class="ancor" th:href="@{/login}">Voltar para a página de Login</a>
+      </div>
+    </div>
   </body>
 </html>

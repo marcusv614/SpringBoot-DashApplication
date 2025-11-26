@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
  * negócio. Ele só encaminha a requisição para o Service. Fluxo correto de uma
  * aplicação Spring : Cliente (Front) → Controller → Service → Repository →
  * Banco
- * 
+ *
  */
 public class PageController {
 	public final UsrService usrService;
