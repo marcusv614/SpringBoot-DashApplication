@@ -1,11 +1,20 @@
-FROM ubuntu:latest AS build
-RUN apt-get update
-RUN apt-get install openjdk-21-jdk -y 
-COPY . . 
+# Stage 1: build com Maven + JDK
+FROM maven:3.9.6-eclipse-temurin-21 AS build
+WORKDIR /workspace
+# copia arquivos do maven
+COPY pom.xml .
+COPY src ./src
+# build sem testes para acelerar (mude se quiser)
+RUN mvn -B -DskipTests package
 
-RUN apt-get install maven -y
-RUN mvn clean install 
-FROM openjdk:21-jdk-slim
-EXPOSE 8080 
-COPY --from=build /target/dash-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
+# Stage 2: runtime com JRE leve
+FROM eclipse-temurin:21-jre-jammy
+WORKDIR /app
+# porta que sua app usa (Render usa PORT env, mas expor 8080 é ok)
+EXPOSE 8080
+
+# copia jar gerado (ajuste o nome conforme o resultado em target/)
+COPY --from=build /workspace/target/*.jar app.jar
+
+# entrypoint
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
