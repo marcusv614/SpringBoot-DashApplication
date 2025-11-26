@@ -28,6 +28,8 @@ A aplicação permite:
   * Spring Web
   * Spring Data JPA
   * Thymeleaf
+  * Spring Security
+  * Lombok
 * 🐬 **MySQL/MariaDB**
 * 🛠 **Maven**
 * 🎨 **HTML + CSS**
