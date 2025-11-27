@@ -53,7 +53,7 @@ public class UsrController {
 		return ResponseEntity.status(201).body(usrService.alterarUsr(usr));
 	}
 
-	@PostMapping("/{id}")
+	@PostMapping("/deletar{id}")
 	public String deletarUsr(@PathVariable Integer id) {
 		usrService.deleteUsr(id);
 		return "redirect:/usuarios";

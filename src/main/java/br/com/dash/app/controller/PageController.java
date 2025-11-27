@@ -22,7 +22,7 @@ public class PageController {
 		this.usrService = usrService;
 	}
 
-	@PostMapping("http://localhost:8080")
+	@PostMapping("/login")
 	public String loginUsr(@RequestParam("username") String username, @RequestParam("pwd") String pwd,
 			HttpSession session, RedirectAttributes redirectAttrs) {
 		log.info("Tentativa de login para username='{}'", username);
