@@ -6,60 +6,53 @@ import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.dash.app.entity.Usr;
 import br.com.dash.app.repository.IUsr;
 
 @Service
-//Services são classes onde está presente as regras de negócio
 public class UsrService {
 
-	private IUsr repository;
-	private PasswordEncoder passwordEncoder;
+	private final IUsr repository;
+	private final PasswordEncoder passwordEncoder;
 
-	// injeção de dependências:
 	public UsrService(IUsr repository) {
 		this.repository = repository;
 		this.passwordEncoder = new BCryptPasswordEncoder();
-		// BCryptPasswordEncoder nos permite criptografar dados.
 	}
 
-	public final Usr criarUsr(Usr usr) {
+	@Transactional
+	public Usr criarUsr(Usr usr) {
 		String encoderSenha = this.passwordEncoder.encode(usr.getPwd());
-		// retorna a senha criptografada do usr
 		usr.setPwd(encoderSenha);
-		// salva senha criptografada
-		repository.save(usr);
-		return usr;
+		return repository.save(usr);
 	}
 
-	public final Usr alterarUsr(Usr usr) {
+	@Transactional
+	public Usr alterarUsr(Usr usr) {
 		String encoderSenha = this.passwordEncoder.encode(usr.getPwd());
-		// retorna a senha criptografada do usr
 		usr.setPwd(encoderSenha);
-		// salva senha criptografada
-		repository.save(usr);
-		return usr;
+		return repository.save(usr);
 	}
 
 	public List<Usr> checarUsr() {
-		List<Usr> lista = repository.findAll();
-		return lista;
+		return repository.findAll();
 	}
 
-	public Boolean validarSenha(String username, String pwd) {
-		String senha = repository.findByUsername(username).getPwd();
-		boolean valid = passwordEncoder.matches(pwd, senha);
-		return valid;
+	public boolean validarSenha(String username, String pwd) {
+		Optional<Usr> optional = repository.findByUsername(username);
+		if (optional.isEmpty()) {
+			return false; // ou lançar UsernameNotFoundException dependendo do fluxo
+		}
+		String senhaHash = optional.get().getPwd();
+		return passwordEncoder.matches(pwd, senhaHash);
 	}
 
-	@PostMapping("/{id}")
-	public Optional<Usr> deleteUsrString(@PathVariable Integer id) {
+	@Transactional
+	public Optional<Usr> deleteUsr(Integer id) {
 		Optional<Usr> usrOptional = repository.findById(id);
-		repository.deleteById(id);
+		usrOptional.ifPresent(u -> repository.deleteById(id));
 		return usrOptional;
 	}
-
 }
